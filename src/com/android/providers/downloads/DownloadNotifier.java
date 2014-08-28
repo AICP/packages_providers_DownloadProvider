@@ -177,10 +177,24 @@ public class DownloadNotifier {
                  }
             }
 
+            // Check paused status about these downloads. If exists, will
+            // update icon and content title/content text in notification.
+            boolean hasPausedStatus = false;
+            int pausedStatus = -1;
+            for (DownloadInfo info : cluster) {
+                if (isPausedStatus(info.mStatus)) {
+                    hasPausedStatus = true;
+                    pausedStatus = info.mStatus;
+                    break;
+                }
+            }
+
             // Show relevant icon
             if (type == TYPE_ACTIVE) {
-                if (hasErrorStatus) {
-                    builder.setSmallIcon(android.R.drawable.stat_sys_warning);
+                if (hasPausedStatus) {
+                    builder.setSmallIcon(R.drawable.download_pause);
+                } else if (hasErrorStatus) {
+                    builder.setSmallIcon(R.drawable.ic_stat_download_error);
                 } else {
                     builder.setSmallIcon(android.R.drawable.stat_sys_download);
                 }
