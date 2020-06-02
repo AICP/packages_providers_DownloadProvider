@@ -946,8 +946,6 @@ public final class DownloadProvider extends ContentProvider {
                             mediaStoreUri.toString());
                     filteredValues.put(COLUMN_MEDIA_SCANNED, MEDIA_SCANNED);
                 }
-                MediaStore.scanFile(getContext(),
-                        new File(filteredValues.getAsString(Downloads.Impl._DATA)));
             } finally {
                 restoreCallingIdentity(token);
             }
@@ -1302,7 +1300,6 @@ public final class DownloadProvider extends ContentProvider {
                     error.append(", ");
                 }
                 error.append(entry.getKey());
-                first = false;
             }
             throw new SecurityException(error.toString());
         }
@@ -1592,9 +1589,6 @@ public final class DownloadProvider extends ContentProvider {
                                 }
                                 qb.update(db, updateValues, Downloads.Impl._ID + "=?",
                                         new String[] { Long.toString(info.mId) });
-                            }
-                            if (Downloads.Impl.isStatusSuccess(info.mStatus)) {
-                                MediaStore.scanFile(getContext(), new File(info.mFileName));
                             }
                         }
                         if (updateSchedule) {
